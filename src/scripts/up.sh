@@ -57,6 +57,15 @@ iw dev "$station" set channel 6
 mkdir -p -- "${dhcpd_lease%/*}"
 [[ -f $dhcpd_lease ]] || touch "$dhcpd_lease"
 
+for SCRIPT in $APPDIR/scripts/before-start.d/*
+  do
+    if [ -f $SCRIPT -a -x $SCRIPT ]
+    then
+      echo -e "\e[1;32mRunning $(basename $SCRIPT)\e[0m"
+      $SCRIPT
+    fi
+done
+
 # Launch bind
 named -4 -c "$named_conf"
 
