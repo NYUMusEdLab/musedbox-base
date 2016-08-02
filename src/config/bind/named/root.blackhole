@@ -6,5 +6,5 @@ $TTL    604800
                         2419200         ; Expire
                          604800 )       ; Negative Cache TTL
 
-        IN      NS      ns1.musedlab.org
+        IN      NS      ns1.musedbox.com
 *.      IN      A       10.10.0.1
