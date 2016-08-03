@@ -1,9 +1,46 @@
 #!/bin/bash
 
-#NIC
-nic=wlan0
-ap=wlan0_ap
-station=wlan0_sta
+# Functions
+get_cpuinfo_prop () {
+  target_line=$(grep -m1 ^"$1" /proc/cpuinfo)
+  echo "${target_line##*: }"
+}
+
+# Constants
+pi=0
+nic=''
+ap=''
+station=''
+pi2types = (a01041 a21041)
+pi3types = (a02082 a22082)
+
+# Diferentiate Pi 2 and Pi 3
+for type in "${pi2types[@]}"; do
+    if [[ $type = "$(get_cpuinfo_prop 'Revision')" ]];
+        pi=2
+        echo "Raspberry Pi 2 Model B detected"
+        break
+    fi
+done
+for type in "${pi3types[@]}"; do
+    if [[ $type = "$(get_cpuinfo_prop 'Revision')" ]];
+        pi=3
+        echo "Raspberry Pi 3 Model B detected"
+        break
+    fi
+done
+
+# NIC
+if [[ $pi = 2 ]]; then
+  nic=wlan0
+  ap=wlan0_ap
+  station=wlan0_sta
+fi
+if [[ $pi = 3 ]]; then
+  nic=wlan0
+  ap=wlan0_ap
+  station=wlan0
+fi
 
 # The subnet IP mask.
 mask=/24
@@ -68,6 +105,8 @@ ip link set $station down
 
 # Remove virtual interfaces
 iw dev "$ap" del
-iw dev "$station" del
+if [[ $pi = 2 ]]; then
+  iw dev "$station" del
+fi
 
 exit 0
