@@ -96,9 +96,9 @@ iptables -A INPUT -i "$ap" -p icmp --icmp-type echo-request -j ACCEPT
 ip addr replace "$server_ip" dev "$ap"
 
 # Start up station interface
-if [[ $pi = 2 ]]; then
-  ip link set dev "$station" up
-fi
+# if [[ $pi = 2 ]]; then
+#   ip link set dev "$station" up
+# fi
 
 # Set channel of station interface
 iw dev "$station" set channel 6
