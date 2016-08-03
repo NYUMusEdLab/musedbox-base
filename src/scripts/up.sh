@@ -11,19 +11,19 @@ pi=0
 nic=''
 ap=''
 station=''
-pi2types = (a01041 a21041)
-pi3types = (a02082 a22082)
+pi2types=(a01041 a21041)
+pi3types=(a02082 a22082)
 
 # Diferentiate Pi 2 and Pi 3
 for type in "${pi2types[@]}"; do
-    if [[ $type = "$(get_cpuinfo_prop 'Revision')" ]];
+    if [[ $type = "$(get_cpuinfo_prop 'Revision')" ]]; then
         pi=2
         echo "Raspberry Pi 2 Model B detected"
         break
     fi
 done
 for type in "${pi3types[@]}"; do
-    if [[ $type = "$(get_cpuinfo_prop 'Revision')" ]];
+    if [[ $type = "$(get_cpuinfo_prop 'Revision')" ]]; then
         pi=3
         echo "Raspberry Pi 3 Model B detected"
         break
@@ -73,7 +73,9 @@ fi
 iw dev "$nic" interface add "$ap" type __ap
 
 # Set MAC addresses
-ip link set dev "$station" address 00:0f:60:06:8c:24
+if [[ $pi = 2 ]]; then
+  ip link set dev "$station" address 00:0f:60:06:8c:24
+fi
 ip link set dev "$ap" address 00:0f:60:06:8c:28
 
 # Open up DNS (53) and DHCP (67) ports on subnet_nic.
@@ -94,7 +96,9 @@ iptables -A INPUT -i "$ap" -p icmp --icmp-type echo-request -j ACCEPT
 ip addr replace "$server_ip" dev "$ap"
 
 # Start up station interface
-ip link set dev "$station" up
+if [[ $pi = 2 ]]; then
+  ip link set dev "$station" up
+fi
 
 # Set channel of station interface
 iw dev "$station" set channel 6

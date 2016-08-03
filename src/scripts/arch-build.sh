@@ -65,6 +65,10 @@ cat << EOF > /etc/systemd/system/musedbox.service.d/env.conf
 [Service]
 Environment="APPDIR=$APPDIR"
 EOF
+echo -e "\e[1;32mCreating ip_forward sysctl setting\e[0m"
+cat << EOF > /etc/sysctl.d/30-ip-forward.conf
+net.ipv4.ip_forward=1
+EOF
 echo -e "\e[1;32mEnabling MusedBox service manually\e[0m"
 ln -s /etc/systemd/system/musedbox.service /etc/systemd/system/multi-user.target.wants/musedbox.service
 exit 0
