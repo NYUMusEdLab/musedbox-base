@@ -12,5 +12,6 @@ $TTL 7200
 1	IN	PTR	musedbox.com.
 1	IN	PTR	ns1.musedbox.com.
 1 IN	PTR api.musedbox.com.
+1 IN  PTR admin.musedbox.com.
 1 IN	PTR box.musedbox.com.
 1 IN	PTR store.musedbox.com.

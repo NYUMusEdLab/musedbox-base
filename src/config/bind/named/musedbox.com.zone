@@ -10,5 +10,6 @@ $TTL	7200
 ns1   	IN	    A      10.10.0.1
 @	    	IN	    A	     10.10.0.1
 api   	IN	    A      10.10.0.1
+admin		IN			A			 10.10.0.1
 home   	IN	    A      10.10.0.1
 store		IN			A			 10.10.0.1
